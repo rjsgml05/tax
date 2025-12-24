@@ -1,5 +1,21 @@
 import streamlit as st
 
+# PWA 설정을 위한 HTML 주입
+st.markdown(
+    """
+    <link rel="manifest" href="/manifest.json">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
+    """,
+    unsafe_allow_html=True
+)
+
+# ... 기존 코드 시작 (st.set_page_config 등)
+import streamlit as st
+
 # 종합소득세 및 보험료 계산 함수
 def get_personal_biz_tax(profit):
     if profit <= 0: return 0
@@ -108,4 +124,5 @@ if st.button("📊 정산 실행 및 리포트 생성", use_container_width=True
         
         st.success(f"### 💰 사장님 최종 순이익: {final_net:,.0f}원")
         st.text_area("상세 리포트 결과 (복사 가능)", full_report, height=450)
+
         st.download_button("📥 보고서(.txt) 다운로드", full_report, file_name="정산보고서.txt")
